@@ -27,12 +27,12 @@ export default function Index() {
 				</button>
 				<div className="h-1/6"></div>
 				<button className="w-[40vh] text-[3vh] block border-4 rounded-xl bg-black border-green-500 font-mono justify-center items-center">
-					<textarea className="w-full text-[2vh] h-[4vh] border-2 rounded-xl bg-grey-500 border-green-500 justify-center">
-						Enter a game code to join
-					</textarea>
 					<p>
 						Join Game
 					</p>
+					<textarea className="w-full text-[2vh] h-[4vh] border-2 rounded-xl bg-grey-500 border-green-500 justify-center">
+						Enter a game code to join
+					</textarea>
 				</button>
 			</div>
     </div>
