@@ -11,6 +11,15 @@ import (
 var Games map[string]*Game = make(map[string]*Game)
 var GlobalMu sync.Mutex
 
+type Game struct {
+	State     string
+	GameID    string
+	WhiteInit bool
+	BlackInit bool
+	Board     [][]string
+	GameMu    sync.Mutex
+}
+
 func CreateGame() (game *Game) {
 	game = &Game{State: "pending black", GameID: shortid.MustGenerate()}
 	GlobalMu.Lock()
@@ -32,29 +41,12 @@ func JoinGame(gameID string) (game *Game, err error) {
 	return game, nil
 }
 
-type Game struct {
-	State     string
-	GameID    string
-	WhiteInit bool
-	BlackInit bool
-	Board     [][]string
-	GameMu    sync.Mutex
+func Write(conn *websocket.Conn, writeMutex *sync.Mutex, data interface{}) {
+	writeMutex.Lock()
+	defer writeMutex.Unlock()
+	conn.WriteJSON(data)
 }
 
-type Player struct {
-	Conn     *websocket.Conn
-	ID       string
-	Color    string
-	PlayerMu sync.Mutex
-}
-
-func (p *Player) Write(data interface{}) {
-	p.PlayerMu.Lock()
-	defer p.PlayerMu.Unlock()
-	p.Conn.WriteJSON(data)
-}
-
-func MakePlayer(conn *websocket.Conn, color string) (player *Player) {
-	player = &Player{Conn: conn, Color: color, ID: shortid.MustGenerate()}
-	return player
+type ErrMsg struct {
+	Error string `json:"error"`
 }
