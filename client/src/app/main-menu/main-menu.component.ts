@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-menu',
@@ -10,10 +11,11 @@ import { CommonModule } from '@angular/common';
   styleUrl: './main-menu.component.css'
 })
 export class MainMenuComponent {
-  constructor(private wsService: WebsocketService) {}
+  constructor(private wsService: WebsocketService, private router: Router) {}
 
   startGame() {
     this.wsService.connect('create').subscribe()
+    this.router.navigate(['waiting'])
   }
 
   gameID: string = ''

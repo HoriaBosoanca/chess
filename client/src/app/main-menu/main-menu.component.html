@@ -1,28 +1,28 @@
 <div class="flex justify-center items-center min-h-screen">
-    <div class="w-[30vh] top-[10vh] h-[10vh] absolute flex justify-center items-center bg-green-950 border-green-500 rounded-xl border-4 z-10">
-      <p class="text-[8vh] font-bold z-10 text-green-500 font-mono">
-        CHESS
-      </p>
-    </div>
-    <img class="w-full lg:w-1/3 filter blur-sm" src="/board.png"/>
-    <div class="top-1/3 h-[30vh] absolute flex-col justify-center items-center">
-      <button (click)="startGame()" class="transition duration-300 hover:brightness-200 active:brightness-400
-      w-[40vh] text-[3vh] flex border-4 rounded-xl bg-green-950 border-green-500 font-mono justify-center items-center">
-        <p class="text-white">
-          Start Game
-        </p>
-      </button>
-      <div class="h-1/6"></div>
-      <button (click)="joinGame()" class=" transition duration-300 hover:brightness-200 active:brightness-400
-      w-[40vh] text-[3vh] block border-4 rounded-xl bg-green-950 border-green-500 font-mono justify-center items-center">
-        <p class="text-white">
-          Join Game
-        </p>
-      </button>
-      <div class="bg-red-950 rounded-xl mt-[1vh]">
-        <p *ngIf="inputError" class="text-red-500 text-center text-[2vh]">{{ this.inputError }}</p>
-      </div>
-      <textarea [(ngModel)]="gameID" placeholder="Enter a game code to join" class="transition hover:brightness-200
-      mt-[1vh] text-gray-500 w-full text-[2vh] h-[4vh] border-4 rounded-xl bg-green-950 border-green-500 text-center"></textarea>
-    </div>
+  <div class="w-[30vh] top-[10vh] h-[10vh] absolute flex justify-center items-center bg-green-950 border-green-500 rounded-xl border-4 z-10">
+    <p class="text-[8vh] font-bold z-10 text-green-500 font-mono">
+      CHESS
+    </p>
   </div>
+  <img class="w-full lg:w-1/3 filter blur-sm" src="/board.png"/>
+  <div class="top-1/3 h-[30vh] absolute flex-col justify-center items-center">
+    <button (click)="startGame()" class="transition duration-300 hover:brightness-200 active:brightness-400
+    w-[40vh] text-[3vh] flex border-4 rounded-xl bg-green-950 border-green-500 font-mono justify-center items-center">
+      <p class="text-white">
+        Start Game
+      </p>
+    </button>
+    <div class="h-1/6"></div>
+    <button (click)="joinGame()" class=" transition duration-300 hover:brightness-200 active:brightness-400
+    w-[40vh] text-[3vh] block border-4 rounded-xl bg-green-950 border-green-500 font-mono justify-center items-center">
+      <p class="text-white">
+        Join Game
+      </p>
+    </button>
+    <div class="bg-red-950 rounded-xl mt-[1vh]">
+      <p *ngIf="inputError" class="text-red-500 text-center text-[2vh]">{{ this.inputError }}</p>
+    </div>
+    <textarea [(ngModel)]="gameID" placeholder="Enter a game code to join" class="transition hover:brightness-200
+    mt-[1vh] text-gray-500 w-full text-[2vh] h-[4vh] border-4 rounded-xl bg-green-950 border-green-500 text-center"></textarea>
+  </div>
+</div>
