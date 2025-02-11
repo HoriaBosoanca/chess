@@ -34,7 +34,10 @@ func play(w http.ResponseWriter, r *http.Request) {
 	} else {
 		gameToJoin, err := JoinGame(gameID)
 		if err != nil {
-			Write(connection, &writeMutex, ErrMsg{Error: "Invalid game ID"})
+			Write(connection, &writeMutex, Notification{
+				Type: "error",
+				Message: "Invalid game ID",
+			})
 			connection.Close()
 			return
 		}
@@ -43,45 +46,63 @@ func play(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// write game id
-	log.Println("test")
-	Write(connection, &writeMutex, struct {
-		GameID string `json:"gameID"`
-	}{
-		GameID: game.GameID,
+	Write(connection, &writeMutex, Notification{
+		Type: "gameID",
+		Message: game.GameID,
 	})
 
 	for {
-		switch game.State {
-		case "waiting for white accept":
-			if color == "white" {
-				Write(connection, &writeMutex, struct {
-					YourColor string `json:"yourColor"`
-				}{
-					YourColor: "white",
+		if color == "white" {
+			switch game.State {
+			case "waiting for white accept":
+				Write(connection, &writeMutex, Notification{
+					Type: "color",
+					Message: "white",
 				})
 				game.State = "waiting for black accept"
-			}
-		case "waiting for black accept":
-			if color == "black" {
-				Write(connection, &writeMutex, struct {
-					YourColor string `json:"yourColor"`
-				}{
-					YourColor: "black",
+			case "notify start white":
+				Write(connection, &writeMutex, Notification{
+					Type: "start",
 				})
-				game.State = "white"
-			}
-		case color:
-			Write(connection, &writeMutex, "it's your turn")
-			var move struct {
-				Move string `json:"move"`
-			}
-			connection.ReadJSON(&move)
-			if color == "white" {
+				game.State = "notify start black"
+			case "white's turn":
+				Write(connection, &writeMutex, Notification{
+					Type: "turn",
+				})
+				var move struct {
+					Move string `json:"move"`
+				}
+				connection.ReadJSON(&move)
+				// execute move
 				game.State = "black"
 			}
-			if color == "black" {
+		}
+
+		if color == "black" {
+			switch game.State {
+			case "waiting for black accept":
+				Write(connection, &writeMutex, Notification{
+					Type: "color",
+					Message: "black",
+				})
+				game.State = "notify start white"
+			case "notify start black":
+				Write(connection, &writeMutex, Notification{
+					Type: "start",
+				})
+				game.State = "white's turn"
+			case "black's turn":
+				Write(connection, &writeMutex, Notification{
+					Type: "move",
+				})
+				var move struct {
+					Move string `json:"move"`
+				}
+				connection.ReadJSON(&move)
+				// execute move
 				game.State = "white"
-			}
+			}	
+
 		}
 	}
 }

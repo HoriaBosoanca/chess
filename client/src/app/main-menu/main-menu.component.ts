@@ -3,6 +3,7 @@ import { WebsocketService } from '../websocket.service';
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Message } from '../app.models'
 
 @Component({
   selector: 'app-main-menu',
@@ -22,9 +23,12 @@ export class MainMenuComponent {
   inputError: string = ''
   joinGame() {
     this.wsService.connect(this.gameID).subscribe({
-      error: (error) => {
-        this.inputError = error
+      error: (error: Message) => {
+        this.inputError = error.message
         this.gameID = ''
+      },
+      next: (message: Message) => {
+        
       }
     })
   }

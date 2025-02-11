@@ -50,3 +50,8 @@ func Write(conn *websocket.Conn, writeMutex *sync.Mutex, data interface{}) {
 type ErrMsg struct {
 	Error string `json:"error"`
 }
+
+type Notification struct {
+	Type string `json:"type"`
+	Message string `json:"message"`
+}
