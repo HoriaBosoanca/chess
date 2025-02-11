@@ -28,7 +28,9 @@ export class MainMenuComponent {
         this.gameID = ''
       },
       next: (message: Message) => {
-        
+        if(message.type == 'start') {
+          this.router.navigate(['game'])
+        }
       }
     })
   }

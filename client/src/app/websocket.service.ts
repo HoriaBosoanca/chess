@@ -48,6 +48,7 @@ export class WebsocketService {
             sessionStorage.setItem('color', messageObj.message)
             break
           case 'start':
+            observer.next(messageObj)
             break
           case 'turn':
             break

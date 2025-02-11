@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
 import { Message } from '../app.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wait',
@@ -10,7 +11,7 @@ import { Message } from '../app.models';
 })
 export class WaitComponent implements OnInit {
   
-  constructor(private wsService: WebsocketService) {}
+  constructor(private wsService: WebsocketService, private router: Router) {}
 
   gameID: string = ""
 
@@ -20,6 +21,9 @@ export class WaitComponent implements OnInit {
           if(message.type == 'gameID') {
             this.gameID = message.message
           } 
+          if(message.type == 'start') {
+            this.router.navigate(['game'])
+          }
         }
       }) 
   }
