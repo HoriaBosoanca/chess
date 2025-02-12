@@ -25,6 +25,6 @@ export class WaitComponent implements OnInit {
             this.router.navigate(['game'])
           }
         }
-      }) 
+      })
   }
 }

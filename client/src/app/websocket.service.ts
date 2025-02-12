@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { Message } from './app.models';
 
 @Injectable({
@@ -51,6 +51,7 @@ export class WebsocketService {
             observer.next(messageObj)
             break
           case 'turn':
+            sessionStorage.setItem('myTurn', 'true')
             break
           default:
             console.log('unknown message:', messageObj)
@@ -65,5 +66,13 @@ export class WebsocketService {
     this.websocket!.send(JSON.stringify({
       move: move
     }))
+  }
+
+  // extra observable stuff
+  unblurer: Subscriber<void> | null = null 
+  unblurBoard(): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.unblurer = observer
+    })
   }
 }
