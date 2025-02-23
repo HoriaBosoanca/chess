@@ -1,4 +1,4 @@
-package chess
+package main
 
 import (
 	"errors"
@@ -6,6 +6,8 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/teris-io/shortid"
+
+	"game/chess"
 )
 
 var Games map[string]*Game = make(map[string]*Game)
@@ -16,7 +18,7 @@ type Game struct {
 	GameID    string
 	WhiteInit bool
 	BlackInit bool
-	Board     [][]string
+	Board     chess.Board
 	GameMu    sync.Mutex
 }
 
@@ -33,7 +35,7 @@ func JoinGame(gameID string) (game *Game, err error) {
 	defer GlobalMu.Unlock()
 	game, exists := Games[gameID]
 	if !exists {
-		return &Game{}, errors.New("!Game not found.")
+		return &Game{}, errors.New("!Game not found")
 	}
 	game.GameMu.Lock()
 	defer game.GameMu.Unlock()

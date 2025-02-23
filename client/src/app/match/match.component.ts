@@ -19,10 +19,24 @@ export class MatchComponent implements OnInit {
 
   renderPieces(): void {
     const board = new Board()
-    board.create('h5', 'white', 'pawn')
-    board.move('h5', 'a1')
-    board.move('a1', 'h8')
-    board.move('h8', 'f1')
+    // pawns
+    board.create('a2', 'white', 'pawn')
+    board.create('b2', 'white', 'pawn')
+    board.create('c2', 'white', 'pawn')
+    board.create('d2', 'white', 'pawn')
+    board.create('e2', 'white', 'pawn')
+    board.create('f2', 'white', 'pawn')
+    board.create('g2', 'white', 'pawn')
+    board.create('h2', 'white', 'pawn')
+    // pieces
+    board.create('a1', 'white', 'rook')
+    board.create('b1', 'white', 'bishop')
+    board.create('c1', 'white', 'knight')
+    board.create('d1', 'white', 'queen')
+    board.create('e1', 'white', 'king')
+    board.create('f1', 'white', 'knight')
+    board.create('g1', 'white', 'bishop')
+    board.create('h1', 'white', 'rook')
   }
 }
 
@@ -68,6 +82,10 @@ class Piece {
     this.type = name
 
     const piece = document.createElement('img')
+    piece.onclick = () => {
+      console.log(piece.id)
+    }
+    piece.draggable = false
     piece.src = `pieces/${color}/${name}.png`
     piece.style.position = 'absolute'
     document.querySelector('#originElement')!.appendChild(piece)
@@ -81,6 +99,7 @@ class Piece {
     if(! /^[a-h][1-8]$/.test(position)) {
       console.error('wrong file or rank')
     }
+    this.image.id = position
     const arr = position.split("")
     const x = xAlgebraicToIndex(arr[0])
     const y = yAlgebraicToIndex(arr[1])
