@@ -1,4 +1,4 @@
-module game
+module mychess
 
 go 1.23.5
 

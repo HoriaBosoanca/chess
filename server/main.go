@@ -6,12 +6,13 @@ import (
 	"net/http"
 	
 	"github.com/gorilla/mux"
+	"mychess/game"
 )
 
 func main() {
 	// init
 	router := mux.NewRouter()
-	router.Use(EnableCORS)
+	router.Use(game.EnableCORS)
 	
 	// get port
 	port := os.Getenv("PORT")
@@ -20,7 +21,7 @@ func main() {
     }
 
 	// Handle endpoints
-	HandleEndpoint(router)
+	game.HandleEndpoint(router)
 
 	// log and start
 	log.Printf("Server starting on port %s.", port)

@@ -12,10 +12,10 @@ func (board *Board) Init() {
 	board.Board = [][]string{
 		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
 		{"WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"},
+		{"  ", "BP", "  ", "  ", "  ", "  ", "BP", "  "},
 		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
 		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
-		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
-		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
+		{"  ", "WP", "  ", "  ", "  ", "  ", "  ", "  "},
 		{"BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"},
 		{"  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "},
 	}
@@ -54,16 +54,43 @@ func (board *Board) Move(from string, to string) {
 
 func (board *Board) GetLegalMoves(position string) (moves []string) {
 	file, rank := ToIndexes(position)
+	fmt.Println(file, rank)
 	piece := board.Board[rank][file]
-	fmt.Println(piece)
 
 	moves = []string{}
 
 	switch string(piece[1]) {
 	case "P":
-		if rank < 7 {
-			if board.Board[rank+1][file] != "XX" {
-				moves = append(moves, FromIndexes(rank+1, file))
+		if string(piece[0]) == "W" && rank != 7 {
+			// move
+			if board.Board[rank+1][file] == "  " {
+				moves = append(moves, FromIndexes(file, rank+1))
+				if rank == 1 && board.Board[rank+2][file] == "  " {
+					moves = append(moves, FromIndexes(file, rank+2))
+				}
+			}
+			// capture
+			if file != 0 && string(board.Board[rank+1][file-1][0]) == "B" {
+				moves = append(moves, FromIndexes(file-1, rank+1))
+			}
+			if file != 7 && string(board.Board[rank+1][file+1][0]) == "B" {
+				moves = append(moves, FromIndexes(file+1, rank+1))
+			}
+		}
+		if string(piece[0]) == "B" && rank != 0 {
+			// move
+			if board.Board[rank-1][file] == "  " {
+				moves = append(moves, FromIndexes(file, rank-1))
+				if rank == 6 && board.Board[rank-2][file] == "  " {
+					moves = append(moves, FromIndexes(file, rank-2))
+				}
+			}
+			// capture
+			if file != 0 && string(board.Board[rank-1][file-1][0]) == "W" {
+				moves = append(moves, FromIndexes(file-1, rank-1))
+			}
+			if file != 7 && string(board.Board[rank-1][file+1][0]) == "W" {
+				moves = append(moves, FromIndexes(file+1, rank-1))
 			}
 		}
 	case "N":
@@ -83,5 +110,5 @@ func ToIndexes(position string) (file, rank int) {
 }
 
 func FromIndexes(file, rank int) (position string) {
-	return string(file + 65)
+	return string(rune(file + 'a')) + string(rune(rank + '1'))
 }

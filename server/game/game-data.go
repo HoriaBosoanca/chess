@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/teris-io/shortid"
 
-	"game/chess"
+	"mychess/chess"
 )
 
 var Games map[string]*Game = make(map[string]*Game)
